@@ -24,7 +24,6 @@ class GetMember {
 
   async searchMember(page = 1, limit = 20, query) {
     const { skip, limit: paginatedLimit } = paginate({}, page, limit);
-
     const members = await this.memberRepository.dynamicSearch(
       skip,
       paginatedLimit,
@@ -33,8 +32,7 @@ class GetMember {
 
     const total = await this.memberRepository.getTotalByDynamicQuery(query);
 
-    const MemberDetails =
-      await this.memberDetailRepository.getAllMemberDetails();
+    const MemberDetails =await this.memberDetailRepository.getAllMemberDetails();
 
     const memberList = await this.listMembers(members);
 
