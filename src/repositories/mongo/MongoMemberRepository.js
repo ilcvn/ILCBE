@@ -77,18 +77,20 @@ class MongoMemberRepository extends MemberRepository {
       .limit(limit)
       .sort({ createDate: -1 });
 
-    return results.sort((a, b) => {
-      //role
-      const rolePriorityA = RolePriority[a.role] || 9999;
-      const rolePriorityB = RolePriority[b.role] || 9999;
+    const roleOrder = ['PRESIDENT', 'VICE_PRESIDENT', 'CHAIRPERSON', 'GROUP_PRESIDENT',
+         'ROOM_PRESIDENT', 'VICE_CHAIRMAN', 'GROUP_VICE_PRESIDENT', 'ROOM_VICE_PRESIDENT', 'MEMBER'];
 
-      if (rolePriorityA !== rolePriorityB) return rolePriorityA - rolePriorityB;
+    return results.sort((member1, member2) => {
 
-      //penName
-      const penPriorityA = penNamePriority[a.penName] || 9999;
-      const penPriorityB = penNamePriority[b.penName] || 9999;
-
-      return penPriorityA - penPriorityB;
+      const roles1 = member1.role.split(', ').map(role => role.toUpperCase());
+      
+      const roles2 = member2.role.split(', ').map(role => role.toUpperCase());
+      
+      // Find the highest priority role in the roleOrder array
+      const priority1 = Math.min(...roles1.map(role => roleOrder.indexOf(role)));
+      const priority2 = Math.min(...roles2.map(role => roleOrder.indexOf(role)));
+    
+      return priority1 - priority2;
     });
   }
 
