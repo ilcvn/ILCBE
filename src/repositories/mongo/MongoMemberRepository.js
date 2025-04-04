@@ -53,7 +53,7 @@ class MongoMemberRepository extends MemberRepository {
     return lastMember ? lastMember.id : 0;
   }
 
-  async dynamicSearch(skip = 0, limit = 20, query) {
+  async dynamicSearch2222(skip = 0, limit = 20, query) {
     const filter = {};
 
     if (query.search) {
@@ -93,6 +93,44 @@ class MongoMemberRepository extends MemberRepository {
       return priority1 - priority2;
     });
   }
+
+  async dynamicSearch(skip = 0, limit = 20, query) {
+    const filter = {};
+    if (query.search) {
+      filter.$or = [{ fullName: { $regex: new RegExp(query.search, "i") } }];
+    }
+
+    let members = await MemberModel.find(filter);
+
+    // auto sort 
+    const roleOrder = ['PRESIDENT', 'VICE_PRESIDENT', 'CHAIRPERSON', 'GROUP_PRESIDENT',
+      'ROOM_PRESIDENT', 'VICE_CHAIRMAN', 'GROUP_VICE_PRESIDENT', 'ROOM_VICE_PRESIDENT', 'MEMBER'];
+
+      members =  members.sort((member1, member2) => {
+
+        const roles1 = member1.role.split(', ').map(role => role.toUpperCase());
+        
+        const roles2 = member2.role.split(', ').map(role => role.toUpperCase());
+        
+        // Find the highest priority role in the roleOrder array
+        const priority1 = Math.min(...roles1.map(role => roleOrder.indexOf(role)));
+        const priority2 = Math.min(...roles2.map(role => roleOrder.indexOf(role)));
+      
+        return priority1 - priority2;
+      });
+
+      if (query.role) {
+        members = members.filter(member => {
+          return member.role.split(", ").includes(query.role);
+        });
+      }
+    console.log(query);
+    if (query.isShow) members = members.filter(member => member.isShow.toString() === query.isShow.toString());
+    
+    if (query.language) members = members.filter(member => member.language.toUpperCase() === query.language.toUpperCase());
+    return members.slice(skip, skip + limit);
+  }
+
 
   async getTotalByDynamicQuery(query) {
     const filter = {};
