@@ -101,7 +101,6 @@ class MongoMemberRepository extends MemberRepository {
     }
 
     let members = await MemberModel.find(filter);
-
     // auto sort 
     const roleOrder = ['PRESIDENT', 'VICE_PRESIDENT', 'CHAIRPERSON', 'GROUP_PRESIDENT',
       'ROOM_PRESIDENT', 'VICE_CHAIRMAN', 'GROUP_VICE_PRESIDENT', 'ROOM_VICE_PRESIDENT', 'MEMBER'];
@@ -119,15 +118,19 @@ class MongoMemberRepository extends MemberRepository {
         return priority1 - priority2;
       });
 
-      if (query.role) {
-        members = members.filter(member => {
-          return member.role.split(", ").includes(query.role);
-        });
-      }
-    console.log(query);
+    if (query.role && query.role !== '----') {
+      members = members.filter(member => {
+        return member.role.split(", ").includes(query.role);
+      });
+    }
+
     if (query.isShow) members = members.filter(member => member.isShow.toString() === query.isShow.toString());
     
     if (query.language) members = members.filter(member => member.language.toUpperCase() === query.language.toUpperCase());
+   
+    if (Number.isNaN(skip)) skip = 0;
+    if (Number.isNaN(limit)) limit = 20;
+    
     return members.slice(skip, skip + limit);
   }
 
