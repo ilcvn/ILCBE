@@ -68,6 +68,10 @@ class MongoArticleRepository extends ArticleRepository {
       filter.type = query.type;
     }
 
+    if (query.language) {
+      filter.language = query.language;
+    }
+
     const results = await ArticleModel.find(filter)
       .skip(skip)
       .limit(limit)
@@ -85,6 +89,10 @@ class MongoArticleRepository extends ArticleRepository {
 
     if (query.type) {
       filter.type = query.type;
+    }
+
+    if (query.language) {
+      filter.language = query.language;
     }
 
     return await ArticleModel.countDocuments(filter);
