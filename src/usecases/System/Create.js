@@ -11,6 +11,12 @@ class CreateSystem {
       id: 1,
     };
 
+    const existingSystemWithId = await this.systemRepository.getSystemInfo(
+      data?.id
+    );
+
+    if (existingSystemWithId) return;
+
     const createdSystem = await this.systemRepository.create(system);
     return createdSystem;
   }

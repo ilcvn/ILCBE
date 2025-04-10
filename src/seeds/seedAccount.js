@@ -17,7 +17,6 @@ const seedAccount = async () => {
   for (const accountData of accounts) {
     try {
       await createSeedAccount.executed(accountData);
-      console.log("account seeds success");
     } catch (error) {
       console.log(error);
     }
