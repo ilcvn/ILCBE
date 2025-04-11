@@ -4,8 +4,9 @@ const DateTimeHandle = require("../../utils/DatetimeHandle");
 const ArticleEnum = require("../../enums/ArticleEnum");
 
 class GetArticle {
-  constructor(articleRepository) {
+  constructor(articleRepository, interactedArticleRepository) {
     this.articleRepository = articleRepository;
+    this.interactedArticleRepository = interactedArticleRepository;
   }
 
   async getArticleById(id) {
@@ -14,6 +15,12 @@ class GetArticle {
       throw new AppError("article does not exist", 404);
     }
     const updatedArticle = await this.articleRepository.addView(id);
+
+    updatedArticle.interactedArticles =
+      await this.interactedArticleRepository.getAllInteractedArticleByArticleID(
+        updatedArticle.id
+      );
+
     return updatedArticle;
   }
 
@@ -28,8 +35,20 @@ class GetArticle {
 
     const total = await this.articleRepository.getTotalByDynamicQuery(query);
 
+    const interactedArticleList = await this.interactedArticleRepository.getAllInteractedArticleByArticleID();
+
+    const articleList = await this.listArticles(articles);
+
+    for (let i = 0; i < articleList.length; i++) {
+      const filteredList = interactedArticleList.filter((item) => {
+        return item.articleID == articleList[i].id;
+      });
+
+      articleList[i].interactedArticles = filteredList;
+    }
+
     return {
-      articles: await this.listArticles(articles),
+      articles: articleList,
       pagination: {
         page: parseInt(page),
         limit: paginatedLimit,
