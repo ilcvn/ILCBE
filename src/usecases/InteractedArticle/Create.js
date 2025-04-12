@@ -4,6 +4,10 @@ class CreateInteractedArticle {
     }
   
     async executed(data) {
+      const lastRate = await
+
+
+
       const lastID = await this.InteractedArticleRepository.getLastId();
       const newId = lastID + 1;
   
