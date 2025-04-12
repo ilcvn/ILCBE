@@ -1,13 +1,15 @@
 const express = require("express");
 const { authMiddleware } = require("../middlewares/AuthMiddleware");
 const MongoArticleRepository = require("../repositories/mongo/MongoArticleRepository");
+const MongoInteractedArticleRepository = require("../repositories/mongo/MongoInteractedArticleRepository");
 const ArticleController = require("../controller/ArticleController");
 
 const ArticleRoutes = () => {
   const router = express.Router();
 
   const articleRepository = new MongoArticleRepository();
-  const articleController = new ArticleController(articleRepository);
+  const interactedArticleRepository = new MongoInteractedArticleRepository();
+  const articleController = new ArticleController(articleRepository, interactedArticleRepository);
 
   router.post("/", authMiddleware, (req, res) => {
     articleController.createArticle(req, res);

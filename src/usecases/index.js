@@ -41,6 +41,10 @@ const GetViewWebsiteUsecase = require("./ViewWebsite/Get");
 // Compound
 const GetCompoundUsecase = require("./Compound/Get");
 
+// Compound
+const CreateInteractedArticle = require("./InteractedArticle/Create");
+const DeleteInteractedArticle = require("./InteractedArticle/Delete");
+
 module.exports = {
   CreateAccountUsecase,
   LoginUseCase,
@@ -76,4 +80,7 @@ module.exports = {
   GetViewWebsiteUsecase,
 
   GetCompoundUsecase,
+
+  CreateInteractedArticle,
+  DeleteInteractedArticle,
 };

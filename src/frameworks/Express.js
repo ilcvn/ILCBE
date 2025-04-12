@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const AccountRoutes = require("../routes/AccountRoutes");
+const InteractedArticleRoutes = require("../routes/InteractedArticleRoutes");
 const ArticleRoutes = require("../routes/ArticleRoutes");
 const MemberRoutes = require("../routes/MemberRoutes");
 const SystemRoutes = require("../routes/SystemRoutes");
@@ -23,6 +24,7 @@ module.exports = () => {
 
   app.use("/api/account", AccountRoutes());
   app.use("/api/article", ArticleRoutes());
+  app.use("/api/interactedArticle", InteractedArticleRoutes());
   app.use("/api/member", MemberRoutes());
   app.use("/api/system", SystemRoutes());
   app.use("/api/reservation", ReservationRoutes());
