@@ -4,17 +4,27 @@ class CreateInteractedArticle {
     }
   
     async executed(data) {
-      const lastID = await this.InteractedArticleRepository.getLastId();
-      const newId = lastID + 1;
-  
-      const InteractedArticle = {
-        ...data,
-        id: newId,
-      };
-  
-      const createdInteractedArticle = await this.InteractedArticleRepository.create(InteractedArticle);
-  
-      return createdInteractedArticle;
+      const lastRate = await this.InteractedArticleRepository.getLastRateByPerson(data.userName);
+      if(lastRate){
+        lastRate.value = data.value;
+        const updatedInteractedArticle = await this.InteractedArticleRepository.update(
+          lastRate.id,
+          lastRate
+        );
+        return updatedInteractedArticle;
+      }else{
+        const lastID = await this.InteractedArticleRepository.getLastId();
+        const newId = lastID + 1;
+    
+        const InteractedArticle = {
+          ...data,
+          id: newId,
+        };
+    
+        const createdInteractedArticle = await this.InteractedArticleRepository.create(InteractedArticle);
+    
+        return createdInteractedArticle;
+      }
     }
   }
   

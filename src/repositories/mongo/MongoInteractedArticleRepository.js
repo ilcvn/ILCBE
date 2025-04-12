@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const InteractedArticleRepository = require("../../interfaces/InteractedArticleRepository");
+const InteractedArticleType = require("../../enums/InteractedArticleEnum");
 
 const InteractedArticleSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
@@ -22,12 +23,23 @@ class MongoInteractedArticleRepository extends InteractedArticleRepository {
     return await newInteractedArticle.save();
   }
 
+  async update(id, updateData) {
+    return await InteractedArticleModel.findOneAndUpdate(
+      { id: id },
+      { ...updateData, updatedDate: Date.now() },
+    );
+  }
+
   async delete(id) {
     return await InteractedArticleModel.findOneAndDelete({ id });
   }
 
   async findById(id) {
     return await InteractedArticleModel.findOne({ id });
+  }
+
+  async getLastRateByPerson(username) {
+    return await InteractedArticleModel.findOne({ userName: username, type: InteractedArticleType.RATE});
   }
 
   async getLastId() {
