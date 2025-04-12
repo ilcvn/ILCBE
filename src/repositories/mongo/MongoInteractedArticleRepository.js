@@ -23,6 +23,13 @@ class MongoInteractedArticleRepository extends InteractedArticleRepository {
     return await newInteractedArticle.save();
   }
 
+  async update(id, updateData) {
+    return await ReservationEntity.findOneAndUpdate(
+      { id: id },
+      { ...updateData, updatedDate: Date.now() },
+    );
+  }
+
   async delete(id) {
     return await InteractedArticleModel.findOneAndDelete({ id });
   }
