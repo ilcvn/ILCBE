@@ -95,6 +95,7 @@ class ArticleController {
         content: article.content,
         view: article.views,
         createDate: article.createDate,
+        interactedArticles: article.interactedArticles,
       };
 
       sendResponse(res, 200, "get detail success", "success", responeData);

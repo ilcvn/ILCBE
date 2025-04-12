@@ -20,7 +20,7 @@ class GetArticle {
       await this.interactedArticleRepository.getAllInteractedArticleByArticleID(
         updatedArticle.id
       );
-
+  
     return updatedArticle;
   }
 
