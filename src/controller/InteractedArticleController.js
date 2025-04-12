@@ -9,8 +9,8 @@ const AppError = require("../utils/AppError");
 
 class InteractedArticleController {
   constructor(interactedArticleRepository) {
-    this.createInteractedArticleUsecase = new CreateArticleUsecase(interactedArticleRepository);
-    this.deleteInteractedArticleUsecase = new DeleteArticleUsecase(interactedArticleRepository);
+    this.createInteractedArticleUsecase = new CreateInteractedArticle(interactedArticleRepository);
+    this.deleteInteractedArticleUsecase = new DeleteInteractedArticle(interactedArticleRepository);
   }
 
   // create
@@ -29,7 +29,7 @@ class InteractedArticleController {
         );
       }
 
-      await this.createArticleUsecase.executed(articleData);
+      await this.createInteractedArticleUsecase.executed(interactedArticleData);
 
       sendResponse(res, 201, "Create article success!", "success", null);
     } catch (error) {
@@ -38,13 +38,13 @@ class InteractedArticleController {
   }
 
   //delete
-  async deleteCreatedArticle(req, res) {
+  async deleteInteractedArticle(req, res) {
     try {
       const { id } = req.params;
       if (!id) {
         throw new AppError("Id are required.", 400);
       }
-      await this.deleteArticleUseCase.executed(id);
+      await this.deleteInteractedArticleUsecase.executed(id);
       sendResponse(res, 200, "Delete article success", "success", null);
     } catch (error) {
       sendError(res, error);

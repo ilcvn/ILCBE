@@ -35,7 +35,7 @@ class GetArticle {
 
     const total = await this.articleRepository.getTotalByDynamicQuery(query);
 
-    const interactedArticleList = await this.interactedArticleRepository.getAllInteractedArticleByArticleID();
+    const interactedArticleList = await this.interactedArticleRepository.getAllInteractedArticles();
 
     const articleList = await this.listArticles(articles);
 

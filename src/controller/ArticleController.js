@@ -9,11 +9,11 @@ const sendError = require("../utils/HandleError");
 const AppError = require("../utils/AppError");
 
 class ArticleController {
-  constructor(articleRepository) {
-    this.createArticleUsecase = new CreateArticleUsecase(articleRepository);
-    this.updateArticleUsecase = new UpdateArticleUsecase(articleRepository);
-    this.deleteArticleUseCase = new DeleteArticleUsecase(articleRepository);
-    this.getArticleUseCase = new GetArticleUsecase(articleRepository);
+  constructor(articleRepository, interactedArticleRepository) {
+    this.createArticleUsecase = new CreateArticleUsecase(articleRepository, interactedArticleRepository);
+    this.updateArticleUsecase = new UpdateArticleUsecase(articleRepository, interactedArticleRepository);
+    this.deleteArticleUseCase = new DeleteArticleUsecase(articleRepository, interactedArticleRepository);
+    this.getArticleUseCase = new GetArticleUsecase(articleRepository, interactedArticleRepository);
   }
 
   // create

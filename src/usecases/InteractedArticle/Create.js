@@ -4,7 +4,7 @@ class CreateInteractedArticle {
     }
   
     async executed(data) {
-      const lastID = await this.memberRepository.getLastId();
+      const lastID = await this.InteractedArticleRepository.getLastId();
       const newId = lastID + 1;
   
       const InteractedArticle = {

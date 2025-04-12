@@ -3,15 +3,7 @@ class InteractedArticleRepository {
     throw new Error("Method not implemented");
   }
 
-  async findByUserName(userName) {
-    throw new Error("Method not implemented");
-  }
-
-  async updateAccessToken(userName, accessToken) {
-    throw new Error("Method not implemented");
-  }
-
-  async delete(userName) {
+  async findById(id) {
     throw new Error("Method not implemented");
   }
 
@@ -19,11 +11,15 @@ class InteractedArticleRepository {
     throw new Error("Method not implemented");
   }
 
-  async findById(id) {
+  async delete(id) {
     throw new Error("Method not implemented");
   }
 
-  async findAccountByAccesstoken(token) {
+  async findAll() {
+    throw new Error("Method not implemented");
+  }
+
+  async getLastId() {
     throw new Error("Method not implemented");
   }
 
@@ -36,4 +32,4 @@ class InteractedArticleRepository {
   }
 }
 
-module.exports = AccountRepository;
+module.exports = InteractedArticleRepository;

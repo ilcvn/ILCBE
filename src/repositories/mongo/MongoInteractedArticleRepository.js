@@ -2,20 +2,19 @@ const mongoose = require("mongoose");
 const InteractedArticleRepository = require("../../interfaces/InteractedArticleRepository");
 
 const InteractedArticleSchema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true },
+  id: { type: Number, required: true, unique: true },
   userName: { type: String, required: true, unique: true },
   fullName: { type: String, required: true, unique: true },
-  avatar: { type: String, required: true, unique: true },
+  avatar: { type: String},
   type: { type: String, required: true },
   value: { type: String, required: true },
-  articleID: { type: String, required: true, unique: true },
+  articleID: { type: Number},
   createdDate: { type: Date, default: Date.now },
   updatedDate: { type: Date, default: Date.now },
 });
 
 const InteractedArticleModel = mongoose.model("InteractedArticle", InteractedArticleSchema);
 
-InteractedArticleRepository
 
 class MongoInteractedArticleRepository extends InteractedArticleRepository {
   async create(data) {
@@ -31,8 +30,19 @@ class MongoInteractedArticleRepository extends InteractedArticleRepository {
     return await InteractedArticleModel.findOne({ id });
   }
 
+  async getLastId() {
+    const lastInteractedArticle = await InteractedArticleModel.findOne()
+      .sort({ id: -1 })
+      .select("id");
+    return lastInteractedArticle ? lastInteractedArticle.id : 0;
+  }
+
   async getAllInteractedArticleByArticleID(article_id) {
-    return await MemberDetailModel.find({ articleID: article_id });
+    return await InteractedArticleModel.find({ articleID: article_id });
+  }
+
+  async getAllInteractedArticles() {
+    return await InteractedArticleModel.find({});
   }
 }
 
