@@ -10,11 +10,11 @@ const InteractedArticleRoutes = () => {
 
   const interactedArticleController = new InteractedArticleController(interactedArticleRepository);
 
-  router.post("/", authMiddleware, (req, res) => {
+  router.post("/", (req, res) => {
     interactedArticleController.createInteractedArticle(req, res);
   });
 
-  router.delete("/:id", authMiddleware, (req, res) => {
+  router.delete("/:id", (req, res) => {
     interactedArticleController.deleteInteractedArticle(req, res);
   });
 
