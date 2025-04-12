@@ -24,7 +24,7 @@ class MongoInteractedArticleRepository extends InteractedArticleRepository {
   }
 
   async update(id, updateData) {
-    return await ReservationEntity.findOneAndUpdate(
+    return await InteractedArticleModel.findOneAndUpdate(
       { id: id },
       { ...updateData, updatedDate: Date.now() },
     );
