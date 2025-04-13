@@ -4,8 +4,8 @@ class CreateInteractedArticle {
     }
   
     async executed(data) {
-      const lastRate = await this.InteractedArticleRepository.getLastRateByPerson(data.userName);
-      if(lastRate && lastRate.articleID === data.articleID){
+      const lastRate = await this.InteractedArticleRepository.getLastRateByPersonInAnArticle(data.userName, data.articleID);
+      if(lastRate){
         lastRate.value = data.value;
         const updatedInteractedArticle = await this.InteractedArticleRepository.update(
           lastRate.id,
