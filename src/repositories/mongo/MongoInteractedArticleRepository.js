@@ -38,8 +38,8 @@ class MongoInteractedArticleRepository extends InteractedArticleRepository {
     return await InteractedArticleModel.findOne({ id });
   }
 
-  async getLastRateByPerson(username) {
-    return await InteractedArticleModel.findOne({ userName: username, type: InteractedArticleType.RATE});
+  async getLastRateByPersonInAnArticle(username, articleID) {
+    return await InteractedArticleModel.findOne({ userName: username, type: InteractedArticleType.RATE, articleID : articleID});
   }
 
   async getLastId() {
