@@ -1,3 +1,4 @@
+const InteractedArticleType = require("../../enums/InteractedArticleEnum");
 class CreateInteractedArticle {
     constructor(InteractedArticleRepository) {
       this.InteractedArticleRepository = InteractedArticleRepository;
@@ -5,7 +6,7 @@ class CreateInteractedArticle {
   
     async executed(data) {
       const lastRate = await this.InteractedArticleRepository.getLastRateByPersonInAnArticle(data.userName, data.articleID);
-      if(lastRate){
+      if(lastRate && data.type === InteractedArticleType.RATE){
         lastRate.value = data.value;
         const updatedInteractedArticle = await this.InteractedArticleRepository.update(
           lastRate.id,
