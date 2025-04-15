@@ -131,6 +131,18 @@ class ArticleController {
         sendError(res, error);
       }
     }
+
+  async translateArticle(req, res) {
+    try {
+      const { id, language } = req.params;
+
+      const rs = await this.createArticleUsecase.translateArticle(id, language);
+
+      sendResponse(res, 201, "translate success", "success", rs);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
 }
 
 module.exports = ArticleController;

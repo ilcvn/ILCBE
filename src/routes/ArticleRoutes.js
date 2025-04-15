@@ -15,6 +15,10 @@ const ArticleRoutes = () => {
     articleController.createArticle(req, res);
   });
 
+  router.post("/translate/:id/:language", authMiddleware, (req, res) => {
+    articleController.translateArticle(req, res);
+  });
+
   router.put("/:id", authMiddleware, (req, res) => {
     articleController.udpateArticle(req, res);
   });
