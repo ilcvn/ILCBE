@@ -34,6 +34,19 @@ class MemberController {
     }
   }
 
+  async trainslateMember(req, res) {
+    try {
+      const { id, language } = req.params;
+
+
+      const rs = await this.createMemberUsecase.translateMember(id, language);
+
+      sendResponse(res, 201, "translate success", "success", rs);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
+
   // update
   async updateMember(req, res) {
     try {

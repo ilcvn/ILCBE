@@ -14,6 +14,9 @@ const MemberRoutes = () => {
   router.post("/", authMiddleware, (req, res) => {
     memberController.createMember(req, res);
   });
+  router.post("/translate/:id/:language", authMiddleware, (req, res) => {
+    memberController.trainslateMember(req, res);
+  });
 
   router.put("/:id", authMiddleware, (req, res) => {
     memberController.updateMember(req, res);
