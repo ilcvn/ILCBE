@@ -131,7 +131,7 @@ class CreateArticle {
     return translatedHtml;
   }
 
-  async translateArticle(id, fromLangue, toLanguage) {
+  async translateArticle(id, fromLanguage, toLanguage) {
     const article = await this.articleRepository.findById(id);
     if (!article) {
       throw new AppError("Article does not exist", 404);
@@ -141,9 +141,9 @@ class CreateArticle {
     const newId = lastID + 1;
 
     const translateFromLanguage =
-    fromLangue !== "ZH"
-        ? fromLangue.toLowerCase()
-        : fromLangue.toLowerCase() + "-CN";
+    fromLanguage !== "ZH"
+        ? fromLanguage.toLowerCase()
+        : fromLanguage.toLowerCase() + "-CN";
     
     const translateToLanguage =
     toLanguage !== "ZH"
