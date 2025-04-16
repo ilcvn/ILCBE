@@ -70,7 +70,12 @@ class CreateMember {
     const lastID = await this.memberRepository.getLastId();
     const newId = lastID + 1;
 
-    const translateLanguage =
+    const translateFromLanguage =
+    fromLangue !== "ZH"
+        ? fromLangue.toLowerCase()
+        : fromLangue.toLowerCase() + "-CN";
+    
+    const translateToLanguage =
     toLanguage !== "ZH"
         ? toLanguage.toLowerCase()
         : toLanguage.toLowerCase() + "-CN";
@@ -78,15 +83,15 @@ class CreateMember {
     const newMember = {
       id: newId,
       fullName: member.fullName,
-      penName: await this.translateText(member.penName, fromLangue, translateLanguage),
+      penName: await this.translateText(member.penName, translateFromLanguage, translateToLanguage),
       typeMember: member.typeMember,
       imgUrl: member.imgUrl,
       phone: member.phone,
       gmail: member.gmail,
       description: await this.translateText(
         member.description,
-        fromLangue,
-        translateLanguage
+        translateFromLanguage,
+        translateToLanguage
       ),
       department: member.department,
       role: member.role,
@@ -112,20 +117,20 @@ class CreateMember {
         memberID: newId,
         title: await this.translateText(
           newMember.memberDetails[i].title,
-          fromLangue,
-          translateLanguage
+          translateFromLanguage,
+          translateToLanguage
         ),
         place: await this.translateText(
           newMember.memberDetails[i].place,
-          fromLangue,
-          translateLanguage
+          translateFromLanguage,
+          translateToLanguage
         ),
         fromDate: newMember.memberDetails[i].fromDate,
         toDate: newMember.memberDetails[i].toDate,
         description: await this.translateText(
           newMember.memberDetails[i].description,
-          fromLangue,
-          translateLanguage
+          translateFromLanguage,
+          translateToLanguage
         ),
         typeDetail: newMember.memberDetails[i].typeDetail,
         createDate: Date.now(),
