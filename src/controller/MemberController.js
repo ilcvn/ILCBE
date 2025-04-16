@@ -51,9 +51,9 @@ class MemberController {
 
   async translateMember(req, res) {
     try {
-      const { id, language } = req.params;
+      const { id, fromLangue, toLanguage } = req.params;
 
-      const rs = await this.createMemberUsecase.translateMember(id, language);
+      const rs = await this.createMemberUsecase.translateMember(id, fromLangue, toLanguage);
 
       sendResponse(res, 200, "translate success", "success", rs);
     } catch (error) {

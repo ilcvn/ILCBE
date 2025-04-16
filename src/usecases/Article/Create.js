@@ -34,8 +34,8 @@ class CreateArticle {
 
   async translateText(
     text,
-    fromLang = "vi",
-    toLang = "zh-CN",
+    fromLang,
+    toLang,
     format = "plain"
   ) {
     try {
@@ -61,7 +61,7 @@ class CreateArticle {
     }
   }
 
-  async translateHTML(htmlContent, fromLang = "vi", toLang = "zh-CN") {
+  async translateHTML(htmlContent, fromLang, toLang) {
     const $ = cheerio.load(htmlContent);
 
     const elements = $("*"); // Các phần tử cần dịch trong HTML
@@ -131,7 +131,7 @@ class CreateArticle {
     return translatedHtml;
   }
 
-  async translateArticle(id, language) {
+  async translateArticle(id, fromLangue, toLanguage) {
     const article = await this.articleRepository.findById(id);
     if (!article) {
       throw new AppError("Article does not exist", 404);
@@ -140,19 +140,19 @@ class CreateArticle {
     const lastID = await this.articleRepository.getLastId();
     const newId = lastID + 1;
 
-    const toLanguage =
-      language !== "ZH"
-        ? language.toLowerCase()
-        : language.toLowerCase() + "-CN";
+    const translateLanguage =
+    toLanguage !== "ZH"
+        ? toLanguage.toLowerCase()
+        : toLanguage.toLowerCase() + "-CN";
 
     const newArticle = {
       id: newId,
-      title: await this.translateText(article.title, "vi", toLanguage),
+      title: await this.translateText(article.title, fromLangue, translateLanguage),
       preview_img: article.preview_img,
       type: article.type,
-      language: language,
-      summary: await this.translateText(article.summary, "vi", toLanguage),
-      content: await this.translateHTML(article.content, "vi", toLanguage),
+      language: toLanguage,
+      summary: await this.translateText(article.summary, fromLangue, translateLanguage),
+      content: await this.translateHTML(article.content, fromLangue, translateLanguage),
       views: 0,
       createDate: Date.now(),
       updateDate: Date.now(),

@@ -34,8 +34,8 @@ class CreateMember {
 
   async translateText(
     text,
-    fromLang = "vi",
-    toLang = "zh-CN",
+    fromLang,
+    toLang,
     format = "plain"
   ) {
     try {
@@ -61,7 +61,7 @@ class CreateMember {
     }
   }
 
-  async translateMember(id, language) {
+  async translateMember(id, fromLangue, toLanguage) {
     const member = await this.memberRepository.findById(id);
     if (!member) {
       throw new AppError("Member does not exist", 404);
@@ -70,28 +70,28 @@ class CreateMember {
     const lastID = await this.memberRepository.getLastId();
     const newId = lastID + 1;
 
-    const toLanguage =
-      language !== "ZH"
-        ? language.toLowerCase()
-        : language.toLowerCase() + "-CN";
+    const translateLanguage =
+    toLanguage !== "ZH"
+        ? toLanguage.toLowerCase()
+        : toLanguage.toLowerCase() + "-CN";
 
     const newMember = {
       id: newId,
       fullName: member.fullName,
-      penName: await this.translateText(member.penName, "vi", toLanguage),
+      penName: await this.translateText(member.penName, fromLangue, translateLanguage),
       typeMember: member.typeMember,
       imgUrl: member.imgUrl,
       phone: member.phone,
       gmail: member.gmail,
       description: await this.translateText(
         member.description,
-        "vi",
-        toLanguage
+        fromLangue,
+        translateLanguage
       ),
       department: member.department,
       role: member.role,
       isShow: member.isShow,
-      language: language,
+      language: toLanguage,
       createDate: Date.now(),
       updateDate: Date.now(),
     };
@@ -112,20 +112,20 @@ class CreateMember {
         memberID: newId,
         title: await this.translateText(
           newMember.memberDetails[i].title,
-          "vi",
-          toLanguage
+          fromLangue,
+          translateLanguage
         ),
         place: await this.translateText(
           newMember.memberDetails[i].place,
-          "vi",
-          toLanguage
+          fromLangue,
+          translateLanguage
         ),
         fromDate: newMember.memberDetails[i].fromDate,
         toDate: newMember.memberDetails[i].toDate,
         description: await this.translateText(
           newMember.memberDetails[i].description,
-          "vi",
-          toLanguage
+          fromLangue,
+          translateLanguage
         ),
         typeDetail: newMember.memberDetails[i].typeDetail,
         createDate: Date.now(),
