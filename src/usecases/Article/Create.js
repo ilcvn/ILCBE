@@ -140,19 +140,24 @@ class CreateArticle {
     const lastID = await this.articleRepository.getLastId();
     const newId = lastID + 1;
 
-    const translateLanguage =
+    const translateFromLanguage =
+    fromLangue !== "ZH"
+        ? fromLangue.toLowerCase()
+        : fromLangue.toLowerCase() + "-CN";
+    
+    const translateToLanguage =
     toLanguage !== "ZH"
         ? toLanguage.toLowerCase()
         : toLanguage.toLowerCase() + "-CN";
 
     const newArticle = {
       id: newId,
-      title: await this.translateText(article.title, fromLangue, translateLanguage),
+      title: await this.translateText(article.title, translateFromLanguage, translateToLanguage),
       preview_img: article.preview_img,
       type: article.type,
       language: toLanguage,
-      summary: await this.translateText(article.summary, fromLangue, translateLanguage),
-      content: await this.translateHTML(article.content, fromLangue, translateLanguage),
+      summary: await this.translateText(article.summary, translateFromLanguage, translateToLanguage),
+      content: await this.translateHTML(article.content, translateFromLanguage, translateToLanguage),
       views: 0,
       createDate: Date.now(),
       updateDate: Date.now(),
