@@ -10,10 +10,22 @@ const AppError = require("../utils/AppError");
 
 class ArticleController {
   constructor(articleRepository, interactedArticleRepository) {
-    this.createArticleUsecase = new CreateArticleUsecase(articleRepository, interactedArticleRepository);
-    this.updateArticleUsecase = new UpdateArticleUsecase(articleRepository, interactedArticleRepository);
-    this.deleteArticleUseCase = new DeleteArticleUsecase(articleRepository, interactedArticleRepository);
-    this.getArticleUseCase = new GetArticleUsecase(articleRepository, interactedArticleRepository);
+    this.createArticleUsecase = new CreateArticleUsecase(
+      articleRepository,
+      interactedArticleRepository
+    );
+    this.updateArticleUsecase = new UpdateArticleUsecase(
+      articleRepository,
+      interactedArticleRepository
+    );
+    this.deleteArticleUseCase = new DeleteArticleUsecase(
+      articleRepository,
+      interactedArticleRepository
+    );
+    this.getArticleUseCase = new GetArticleUsecase(
+      articleRepository,
+      interactedArticleRepository
+    );
   }
 
   // create
@@ -121,16 +133,29 @@ class ArticleController {
   }
 
   async getAllArticleStatisticByYear(req, res) {
-      try {
-        const {year} = req.params;
-        const statistic = await this.getArticleUseCase.getAllArticleStatisticByYear(year);
-        const responseData = statistic
-  
-        sendResponse(res, 200, "Get statistic success", "success", responseData);
-      } catch (error) {
-        sendError(res, error);
-      }
+    try {
+      const { year } = req.params;
+      const statistic =
+        await this.getArticleUseCase.getAllArticleStatisticByYear(year);
+      const responseData = statistic;
+
+      sendResponse(res, 200, "Get statistic success", "success", responseData);
+    } catch (error) {
+      sendError(res, error);
     }
+  }
+
+  async translateArticle(req, res) {
+    try {
+      const { id, fromLangue, toLanguage } = req.params;
+
+      const rs = await this.createArticleUsecase.translateArticle(id, fromLangue, toLanguage);
+
+      sendResponse(res, 200, "translate success", "success", rs);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
 }
 
 module.exports = ArticleController;

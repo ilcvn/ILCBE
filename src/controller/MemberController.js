@@ -11,10 +11,22 @@ const AppError = require("../utils/AppError");
 
 class MemberController {
   constructor(memberRepository, memberDetailRepository) {
-    this.createMemberUsecase = new CreateMemberUsecase(memberRepository, memberDetailRepository);
-    this.updateMemberUsecase = new UpdateMemberUsecase(memberRepository, memberDetailRepository);
-    this.deleteMemberUseCase = new DeleteMemberUsecase(memberRepository, memberDetailRepository);
-    this.getMemberUseCase = new GetMemberUsecase(memberRepository, memberDetailRepository);
+    this.createMemberUsecase = new CreateMemberUsecase(
+      memberRepository,
+      memberDetailRepository
+    );
+    this.updateMemberUsecase = new UpdateMemberUsecase(
+      memberRepository,
+      memberDetailRepository
+    );
+    this.deleteMemberUseCase = new DeleteMemberUsecase(
+      memberRepository,
+      memberDetailRepository
+    );
+    this.getMemberUseCase = new GetMemberUsecase(
+      memberRepository,
+      memberDetailRepository
+    );
   }
 
   // create
@@ -23,12 +35,27 @@ class MemberController {
       const memberData = req.body;
 
       if (!memberData.fullName || !memberData.role || !memberData.department) {
-        throw new AppError("All fields (name, role, department) are required.", 400);
+        throw new AppError(
+          "All fields (name, role, department) are required.",
+          400
+        );
       }
 
       await this.createMemberUsecase.executed(memberData);
 
       sendResponse(res, 201, "create success", "success", null);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
+
+  async translateMember(req, res) {
+    try {
+      const { id, fromLangue, toLanguage } = req.params;
+
+      const rs = await this.createMemberUsecase.translateMember(id, fromLangue, toLanguage);
+
+      sendResponse(res, 200, "translate success", "success", rs);
     } catch (error) {
       sendError(res, error);
     }
@@ -120,9 +147,11 @@ class MemberController {
   // get
   async getAllMemberStatisticByYear(req, res) {
     try {
-      const {year} = req.params;
-      const statistic = await this.getMemberUseCase.getAllMemberStatisticByYear(year);
-      const responseData = statistic
+      const { year } = req.params;
+      const statistic = await this.getMemberUseCase.getAllMemberStatisticByYear(
+        year
+      );
+      const responseData = statistic;
 
       sendResponse(res, 200, "Get statistic success", "success", responseData);
     } catch (error) {
