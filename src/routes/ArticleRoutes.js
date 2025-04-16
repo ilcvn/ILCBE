@@ -16,6 +16,7 @@ const ArticleRoutes = () => {
   });
 
   router.post("/translate/:id/:fromLanguage/:toLanguage", authMiddleware, (req, res) => {
+    console.log('translate');
     articleController.translateArticle(req, res);
   });
 

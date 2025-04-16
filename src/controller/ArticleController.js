@@ -147,9 +147,9 @@ class ArticleController {
 
   async translateArticle(req, res) {
     try {
-      const { id, fromLangue, toLanguage } = req.params;
-
-      const rs = await this.createArticleUsecase.translateArticle(id, fromLangue, toLanguage);
+      const { id, fromLanguage, toLanguage } = req.params;
+      console.log(res.params);
+      const rs = await this.createArticleUsecase.translateArticle(id, fromLanguage, toLanguage);
 
       sendResponse(res, 200, "translate success", "success", rs);
     } catch (error) {
