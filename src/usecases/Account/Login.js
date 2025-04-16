@@ -10,7 +10,7 @@ class Login {
   async login(userName, password) {
     const account = await this.accountRepository.findByUserName(userName);
     if (!account) {
-      throw new AppError("Tên tài khoản hoặc mật khẩu không đúng", 404);
+      throw new AppError("Tên tài khoản không tồn tại", 404);
     }
 
     if (account.status !== "active") {
@@ -24,7 +24,7 @@ class Login {
     );
 
     if (!isPasswordValid) {
-      throw new AppError("Name or password are wrong", 404);
+      throw new AppError("Mật khẩu chưa chính xác", 404);
     }
 
     const accessToken = TokenGenerator.generateAccessToken(
