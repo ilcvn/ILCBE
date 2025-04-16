@@ -157,7 +157,10 @@ class CreateArticle {
       createDate: Date.now(),
       updateDate: Date.now(),
     };
-  }
+
+    const createdArticle = await this.articleRepository.create(newArticle);
+    return createdArticle;
+  } 
 }
 
 module.exports = CreateArticle;
