@@ -4,8 +4,8 @@ const InteractedArticleType = require("../../enums/InteractedArticleEnum");
 
 const InteractedArticleSchema = new mongoose.Schema({
   id: { type: Number, required: true, unique: true },
-  userName: { type: String, required: true, unique: true },
-  fullName: { type: String, required: true, unique: true },
+  userName: { type: String, required: true },
+  fullName: { type: String, required: true },
   avatar: { type: String},
   type: { type: String, required: true },
   value: { type: String, required: true },
@@ -20,6 +20,7 @@ const InteractedArticleModel = mongoose.model("InteractedArticle", InteractedArt
 class MongoInteractedArticleRepository extends InteractedArticleRepository {
   async create(data) {
     const newInteractedArticle = new InteractedArticleModel(data);
+    console.log(newInteractedArticle);
     return await newInteractedArticle.save();
   }
 

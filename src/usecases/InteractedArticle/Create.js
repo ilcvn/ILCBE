@@ -5,6 +5,7 @@ class CreateInteractedArticle {
     }
   
     async executed(data) {
+      console.log('vo day');
       const lastRate = await this.InteractedArticleRepository.getLastRateByPersonInAnArticle(data.userName, data.articleID);
       if(lastRate && data.type === InteractedArticleType.RATE){
         lastRate.value = data.value;
@@ -21,9 +22,9 @@ class CreateInteractedArticle {
           ...data,
           id: newId,
         };
-    
+
+        InteractedArticle.articleID = Number(InteractedArticle.articleID);
         const createdInteractedArticle = await this.InteractedArticleRepository.create(InteractedArticle);
-    
         return createdInteractedArticle;
       }
     }
