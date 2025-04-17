@@ -101,6 +101,11 @@ class MongoArticleRepository extends ArticleRepository {
   async getAllArticles() {
     return await ArticleModel.find({});
   }
+
+  async getCountImageUrl(preview_img) {
+    const count = await ArticleModel.countDocuments({ preview_img });
+    return count;
+  }
 }
 
 module.exports = MongoArticleRepository;

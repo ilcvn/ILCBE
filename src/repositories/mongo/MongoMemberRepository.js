@@ -77,19 +77,31 @@ class MongoMemberRepository extends MemberRepository {
       .limit(limit)
       .sort({ createDate: -1 });
 
-    const roleOrder = ['PRESIDENT', 'VICE_PRESIDENT', 'CHAIRPERSON', 'GROUP_PRESIDENT',
-         'ROOM_PRESIDENT', 'VICE_CHAIRMAN', 'GROUP_VICE_PRESIDENT', 'ROOM_VICE_PRESIDENT', 'MEMBER'];
+    const roleOrder = [
+      "PRESIDENT",
+      "VICE_PRESIDENT",
+      "CHAIRPERSON",
+      "GROUP_PRESIDENT",
+      "ROOM_PRESIDENT",
+      "VICE_CHAIRMAN",
+      "GROUP_VICE_PRESIDENT",
+      "ROOM_VICE_PRESIDENT",
+      "MEMBER",
+    ];
 
     return results.sort((member1, member2) => {
+      const roles1 = member1.role.split(", ").map((role) => role.toUpperCase());
 
-      const roles1 = member1.role.split(', ').map(role => role.toUpperCase());
-      
-      const roles2 = member2.role.split(', ').map(role => role.toUpperCase());
-      
+      const roles2 = member2.role.split(", ").map((role) => role.toUpperCase());
+
       // Find the highest priority role in the roleOrder array
-      const priority1 = Math.min(...roles1.map(role => roleOrder.indexOf(role)));
-      const priority2 = Math.min(...roles2.map(role => roleOrder.indexOf(role)));
-    
+      const priority1 = Math.min(
+        ...roles1.map((role) => roleOrder.indexOf(role))
+      );
+      const priority2 = Math.min(
+        ...roles2.map((role) => roleOrder.indexOf(role))
+      );
+
       return priority1 - priority2;
     });
   }
@@ -101,39 +113,57 @@ class MongoMemberRepository extends MemberRepository {
     }
 
     let members = await MemberModel.find(filter);
-    // auto sort 
-    const roleOrder = ['PRESIDENT', 'VICE_PRESIDENT', 'CHAIRPERSON', 'GROUP_PRESIDENT',
-      'ROOM_PRESIDENT', 'VICE_CHAIRMAN', 'GROUP_VICE_PRESIDENT', 'ROOM_VICE_PRESIDENT', 'MEMBER'];
+    // auto sort
+    const roleOrder = [
+      "PRESIDENT",
+      "VICE_PRESIDENT",
+      "CHAIRPERSON",
+      "GROUP_PRESIDENT",
+      "ROOM_PRESIDENT",
+      "VICE_CHAIRMAN",
+      "GROUP_VICE_PRESIDENT",
+      "ROOM_VICE_PRESIDENT",
+      "MEMBER",
+    ];
 
-      members =  members.sort((member1, member2) => {
+    members = members.sort((member1, member2) => {
+      const roles1 = member1.role.split(", ").map((role) => role.toUpperCase());
 
-        const roles1 = member1.role.split(', ').map(role => role.toUpperCase());
-        
-        const roles2 = member2.role.split(', ').map(role => role.toUpperCase());
-        
-        // Find the highest priority role in the roleOrder array
-        const priority1 = Math.min(...roles1.map(role => roleOrder.indexOf(role)));
-        const priority2 = Math.min(...roles2.map(role => roleOrder.indexOf(role)));
-      
-        return priority1 - priority2;
-      });
+      const roles2 = member2.role.split(", ").map((role) => role.toUpperCase());
 
-    if (query.role && query.role !== '----') {
-      members = members.filter(member => {
+      // Find the highest priority role in the roleOrder array
+      const priority1 = Math.min(
+        ...roles1.map((role) => roleOrder.indexOf(role))
+      );
+      const priority2 = Math.min(
+        ...roles2.map((role) => roleOrder.indexOf(role))
+      );
+
+      return priority1 - priority2;
+    });
+
+    if (query.role && query.role !== "----") {
+      members = members.filter((member) => {
         return member.role.split(", ").includes(query.role);
       });
     }
 
-    if (query.isShow) members = members.filter(member => member.isShow.toString() === query.isShow.toString());
-    
-    if (query.language) members = members.filter(member => member.language.toUpperCase() === query.language.toUpperCase());
-   
+    if (query.isShow)
+      members = members.filter(
+        (member) => member.isShow.toString() === query.isShow.toString()
+      );
+
+    if (query.language)
+      members = members.filter(
+        (member) =>
+          member.language.toUpperCase() === query.language.toUpperCase()
+      );
+
     if (Number.isNaN(skip)) skip = 0;
     if (Number.isNaN(limit)) limit = 20;
-    
+
     return members.slice(skip, skip + limit);
   }
-
 
   async getTotalByDynamicQuery(query) {
     const filter = {};
@@ -159,6 +189,11 @@ class MongoMemberRepository extends MemberRepository {
 
   async getAllMembers() {
     return await MemberModel.find({});
+  }
+
+  async getCountImageUrl(imgUrl) {
+    const count = await MemberModel.countDocuments({ imgUrl });
+    return count;
   }
 }
 

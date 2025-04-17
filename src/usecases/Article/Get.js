@@ -20,7 +20,7 @@ class GetArticle {
       await this.interactedArticleRepository.getAllInteractedArticleByArticleID(
         updatedArticle.id
       );
-  
+
     return updatedArticle;
   }
 
@@ -35,7 +35,8 @@ class GetArticle {
 
     const total = await this.articleRepository.getTotalByDynamicQuery(query);
 
-    const interactedArticleList = await this.interactedArticleRepository.getAllInteractedArticles();
+    const interactedArticleList =
+      await this.interactedArticleRepository.getAllInteractedArticles();
 
     const articleList = await this.listArticles(articles);
 
@@ -75,8 +76,12 @@ class GetArticle {
 
     for (let month = 0; month < 12; month++) {
       const firstDateOfMonth = DateTimeHandle.getDateByOption(year, month, 1);
-      const firstDateOfNextMonth = DateTimeHandle.getDateByOption(year, month + 1, 1);
-      
+      const firstDateOfNextMonth = DateTimeHandle.getDateByOption(
+        year,
+        month + 1,
+        1
+      );
+
       const newsList = articles.filter((item) => {
         const itemDate = item.createDate;
         return (
@@ -94,7 +99,7 @@ class GetArticle {
           itemDate < firstDateOfNextMonth
         );
       });
-      
+
       const serviceList = articles.filter((item) => {
         const itemDate = item.createDate;
         return (
@@ -112,6 +117,10 @@ class GetArticle {
       });
     }
     return allMonths;
+  }
+
+  async getAllCountImageUrl(preview_img) {
+    return this.articleRepository.getCountImageUrl(preview_img);
   }
 }
 

@@ -9,14 +9,21 @@ const MemberRoutes = () => {
 
   const memberRepository = new MongoMemberRepository();
   const MemberDetailRepository = new MongoMemberDetailRepository();
-  const memberController = new MemberController(memberRepository, MemberDetailRepository);
+  const memberController = new MemberController(
+    memberRepository,
+    MemberDetailRepository
+  );
 
   router.post("/", authMiddleware, (req, res) => {
     memberController.createMember(req, res);
   });
-  router.post("/translate/:id/:fromLangue/:toLanguage", authMiddleware, (req, res) => {
-    memberController.translateMember(req, res);
-  });
+  router.post(
+    "/translate/:id/:fromLangue/:toLanguage",
+    authMiddleware,
+    (req, res) => {
+      memberController.translateMember(req, res);
+    }
+  );
 
   router.put("/:id", authMiddleware, (req, res) => {
     memberController.updateMember(req, res);
@@ -32,7 +39,13 @@ const MemberRoutes = () => {
 
   router.get("/", (req, res) => memberController.dynamicSearch(req, res));
 
-  router.post("/statistic/:year", authMiddleware, (req, res) => memberController.getAllMemberStatisticByYear(req, res));
+  router.get("/count/image", (req, res) =>
+    memberController.getAllCountImageUrl(req, res)
+  );
+
+  router.post("/statistic/:year", authMiddleware, (req, res) =>
+    memberController.getAllMemberStatisticByYear(req, res)
+  );
 
   return router;
 };
