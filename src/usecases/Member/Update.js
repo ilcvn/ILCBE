@@ -17,6 +17,8 @@ class UpdateMember {
 
     const updatedMember = await this.memberRepository.update(id, updateData);
 
+    await this.memberRepository.updateImgByIDnCoppiedID(updatedMember.coppied_id === 0 ? updatedMember.id: updatedMember.coppied_id, updatedMember.imgUrl);
+
     await this.memberDetailRepository.deleteByMemberID(id);
 
     if (updateData.memberDetails && updateData.memberDetails.length > 0) {

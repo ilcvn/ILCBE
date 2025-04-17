@@ -1,4 +1,5 @@
-const translate = require("google-translate-api-x");
+const Translator = require("../../utils/Translator");
+
 class CreateMember {
   constructor(memberRepository, memberDetailRepository) {
     this.memberRepository = memberRepository;
@@ -9,9 +10,6 @@ class CreateMember {
     const lastID = await this.memberRepository.getLastId();
     const newId = lastID + 1;
 
-    // const memberDetails = data.memberDetails;
-    // delete data.memberDetails;
-
     const member = {
       ...data,
       id: newId,
@@ -19,48 +17,9 @@ class CreateMember {
 
     const createdMember = await this.memberRepository.create(member);
 
-    // const newDetailId = await this.memberDetailRepository.getLastId();
-    // for (let i = 0; i < memberDetails.length; i++) {
-    //   const detailMember = {
-    //     ...memberDetails[i],
-    //     memberID: newId,
-    //     id: newDetailId + i + 1,
-    //   };
-    //   await this.memberDetailRepository.create(detailMember);
-    // }
-
     return createdMember;
   }
-
-  async translateText(
-    text,
-    fromLang,
-    toLang,
-    format = "plain"
-  ) {
-    try {
-      const lines = text.split("\n");
-
-      const translatedLines = await Promise.all(
-        lines.map(async (line) => {
-          if (line.trim() === "") return "";
-          const result = await translate(line, { from: fromLang, to: toLang });
-          return result.text;
-        })
-      );
-
-      const resultText = translatedLines.join("\n");
-
-      if (format === "html") {
-        return resultText.replace(/\n/g, "<br>");
-      }
-      return resultText;
-    } catch (error) {
-      console.error("Translation error:", error);
-      throw error;
-    }
-  }
-
+  
   async translateMember(id, fromLangue, toLanguage) {
     const member = await this.memberRepository.findById(id);
     if (!member) {
@@ -83,12 +42,12 @@ class CreateMember {
     const newMember = {
       id: newId,
       fullName: member.fullName,
-      penName: await this.translateText(member.penName, translateFromLanguage, translateToLanguage),
+      penName: await Translator.translateText(member.penName, translateFromLanguage, translateToLanguage),
       typeMember: member.typeMember,
       imgUrl: member.imgUrl,
       phone: member.phone,
       gmail: member.gmail,
-      description: await this.translateText(
+      description: await Translator.translateText(
         member.description,
         translateFromLanguage,
         translateToLanguage
@@ -99,6 +58,7 @@ class CreateMember {
       language: toLanguage,
       createDate: Date.now(),
       updateDate: Date.now(),
+      coppied_id : member.coppied_id === 0 ? member.id: member.coppied_id,
     };
 
     const createdMember = await this.memberRepository.create(newMember);
@@ -115,19 +75,19 @@ class CreateMember {
       const newDetailMember = {
         id: newDetailId,
         memberID: newId,
-        title: await this.translateText(
+        title: await Translator.translateText(
           newMember.memberDetails[i].title,
           translateFromLanguage,
           translateToLanguage
         ),
-        place: await this.translateText(
+        place: await Translator.translateText(
           newMember.memberDetails[i].place,
           translateFromLanguage,
           translateToLanguage
         ),
         fromDate: newMember.memberDetails[i].fromDate,
         toDate: newMember.memberDetails[i].toDate,
-        description: await this.translateText(
+        description: await Translator.translateText(
           newMember.memberDetails[i].description,
           translateFromLanguage,
           translateToLanguage
