@@ -20,6 +20,7 @@ const MemberSchema = new mongoose.Schema({
   language: { type: String, default: "VI" },
   createDate: { type: Date, default: Date.now },
   updateDate: { type: Date, default: Date.now },
+  coppied_id: { type: Number, default:0 },
 });
 
 const MemberModel = mongoose.model("Member", MemberSchema);
@@ -36,6 +37,32 @@ class MongoMemberRepository extends MemberRepository {
       { ...updateData, updateDate: Date.now() },
       { new: true }
     );
+  }
+
+  async updateImgByIDnCoppiedID(id, img) {
+    try {
+
+  
+      const result = await MemberModel.updateMany(
+        {
+          $or: [
+            { id: id },
+            { coppied_id: id }
+          ]
+        },
+        {
+          $set: {
+            imgUrl: img,
+            lastModified: Date.now()
+          }
+        }
+      );
+  
+      return result;
+    } catch (error) {
+      console.error("Update error:", error);
+      throw error;
+    }
   }
 
   async delete(id) {

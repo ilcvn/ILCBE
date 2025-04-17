@@ -120,6 +120,7 @@ class MemberController {
         isShow: member.isShow,
         language: member.language,
         createDate: member.createDate,
+        coppied_id : member.coppied_id,
       };
 
       sendResponse(res, 200, "Get detail success", "success", responseData);
