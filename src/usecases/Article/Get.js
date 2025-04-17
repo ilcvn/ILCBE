@@ -122,6 +122,18 @@ class GetArticle {
   async getAllCountImageUrl(preview_img) {
     return this.articleRepository.getCountImageUrl(preview_img);
   }
+
+  async getAllCountImageInContent(image_content) {
+    const articles = await this.articleRepository.getAllArticles();
+    let count = 0;
+    for (let i = 0; i < articles.length; i++) {
+      const countI = (
+        articles[i].content.match(new RegExp(image_content, "g")) || []
+      ).length;
+      count += countI;
+    }
+    return count;
+  }
 }
 
 module.exports = GetArticle;

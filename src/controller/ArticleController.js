@@ -177,6 +177,22 @@ class ArticleController {
       sendError(res, error);
     }
   }
+
+  async getAllCountImageInContent(req, res) {
+    try {
+      const { image_content } = req.query;
+      if (!image_content) {
+        return sendResponse(res, 400, "Missed imgUrl", "error", null);
+      }
+      const count = await this.getArticleUseCase.getAllCountImageInContent(
+        image_content
+      );
+      const responseData = count;
+      sendResponse(res, 200, "Get article success", "success", responseData);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
 }
 
 module.exports = ArticleController;

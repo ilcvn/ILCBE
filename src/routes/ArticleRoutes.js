@@ -43,6 +43,10 @@ const ArticleRoutes = () => {
     articleController.getAllCountImageUrl(req, res)
   );
 
+  router.get("/count/imageContent", (req, res) =>
+    articleController.getAllCountImageInContent(req, res)
+  );
+
   router.get("/", (req, res) => articleController.dynamicSearch(req, res));
 
   router.post("/statistic/:year", authMiddleware, (req, res) =>
