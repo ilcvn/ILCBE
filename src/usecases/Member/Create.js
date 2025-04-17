@@ -42,7 +42,7 @@ class CreateMember {
     const newMember = {
       id: newId,
       fullName: member.fullName,
-      penName: await Translator.translateText(member.penName, translateFromLanguage, translateToLanguage),
+      penName: await Translator.translateText(member.penName, translateFromLanguage, translateToLanguage).toUpperCase(),
       typeMember: member.typeMember,
       imgUrl: member.imgUrl,
       phone: member.phone,
