@@ -9,16 +9,23 @@ const ArticleRoutes = () => {
 
   const articleRepository = new MongoArticleRepository();
   const interactedArticleRepository = new MongoInteractedArticleRepository();
-  const articleController = new ArticleController(articleRepository, interactedArticleRepository);
+  const articleController = new ArticleController(
+    articleRepository,
+    interactedArticleRepository
+  );
 
   router.post("/", authMiddleware, (req, res) => {
     articleController.createArticle(req, res);
   });
 
-  router.post("/translate/:id/:fromLanguage/:toLanguage", authMiddleware, (req, res) => {
-    console.log('translate');
-    articleController.translateArticle(req, res);
-  });
+  router.post(
+    "/translate/:id/:fromLanguage/:toLanguage",
+    authMiddleware,
+    (req, res) => {
+      console.log("translate");
+      articleController.translateArticle(req, res);
+    }
+  );
 
   router.put("/:id", authMiddleware, (req, res) => {
     articleController.udpateArticle(req, res);
@@ -31,6 +38,14 @@ const ArticleRoutes = () => {
   router.get("/:id", (req, res) => {
     articleController.getArticleDetail(req, res);
   });
+
+  router.get("/count/image", (req, res) =>
+    articleController.getAllCountImageUrl(req, res)
+  );
+
+  router.get("/count/imageContent", (req, res) =>
+    articleController.getAllCountImageInContent(req, res)
+  );
 
   router.get("/", (req, res) => articleController.dynamicSearch(req, res));
 

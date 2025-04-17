@@ -53,7 +53,11 @@ class MemberController {
     try {
       const { id, fromLangue, toLanguage } = req.params;
 
-      const rs = await this.createMemberUsecase.translateMember(id, fromLangue, toLanguage);
+      const rs = await this.createMemberUsecase.translateMember(
+        id,
+        fromLangue,
+        toLanguage
+      );
 
       sendResponse(res, 200, "translate success", "success", rs);
     } catch (error) {
@@ -154,6 +158,21 @@ class MemberController {
       );
       const responseData = statistic;
 
+      sendResponse(res, 200, "Get statistic success", "success", responseData);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
+
+  async getAllCountImageUrl(req, res) {
+    try {
+      const { imgUrl } = req.query;
+
+      if (!imgUrl) {
+        return sendResponse(res, 400, "Missed imgUrl", "error", null);
+      }
+      const count = await this.getMemberUseCase.getAllCountImageUrl(imgUrl);
+      const responseData = count;
       sendResponse(res, 200, "Get statistic success", "success", responseData);
     } catch (error) {
       sendError(res, error);

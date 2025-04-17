@@ -149,9 +149,46 @@ class ArticleController {
     try {
       const { id, fromLanguage, toLanguage } = req.params;
       console.log(res.params);
-      const rs = await this.createArticleUsecase.translateArticle(id, fromLanguage, toLanguage);
+      const rs = await this.createArticleUsecase.translateArticle(
+        id,
+        fromLanguage,
+        toLanguage
+      );
 
       sendResponse(res, 200, "translate success", "success", rs);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
+
+  async getAllCountImageUrl(req, res) {
+    try {
+      const { preview_img } = req.query;
+
+      if (!preview_img) {
+        return sendResponse(res, 400, "Missed imgUrl", "error", null);
+      }
+      const count = await this.getArticleUseCase.getAllCountImageUrl(
+        preview_img
+      );
+      const responseData = count;
+      sendResponse(res, 200, "Get article success", "success", responseData);
+    } catch (error) {
+      sendError(res, error);
+    }
+  }
+
+  async getAllCountImageInContent(req, res) {
+    try {
+      const { image_content } = req.query;
+      if (!image_content) {
+        return sendResponse(res, 400, "Missed imgUrl", "error", null);
+      }
+      const count = await this.getArticleUseCase.getAllCountImageInContent(
+        image_content
+      );
+      const responseData = count;
+      sendResponse(res, 200, "Get article success", "success", responseData);
     } catch (error) {
       sendError(res, error);
     }

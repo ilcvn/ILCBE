@@ -32,7 +32,8 @@ class GetMember {
 
     const total = await this.memberRepository.getTotalByDynamicQuery(query);
 
-    const MemberDetails = await this.memberDetailRepository.getAllMemberDetails();
+    const MemberDetails =
+      await this.memberDetailRepository.getAllMemberDetails();
 
     const memberList = await this.listMembers(members);
 
@@ -87,6 +88,10 @@ class GetMember {
       });
     }
     return allMonths;
+  }
+
+  async getAllCountImageUrl(imageUrl) {
+    return this.memberRepository.getCountImageUrl(imageUrl);
   }
 }
 
