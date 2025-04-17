@@ -42,7 +42,7 @@ class CreateMember {
     const newMember = {
       id: newId,
       fullName: member.fullName,
-      penName: await Translator.translateText(member.penName, translateFromLanguage, translateToLanguage).toUpperCase(),
+      penName: (await Translator.translateText(member.penName, translateFromLanguage, translateToLanguage)).toUpperCase(),
       typeMember: member.typeMember,
       imgUrl: member.imgUrl,
       phone: member.phone,
@@ -60,6 +60,8 @@ class CreateMember {
       updateDate: Date.now(),
       coppied_id : member.coppied_id === 0 ? member.id: member.coppied_id,
     };
+
+    console.log(newMember);
 
     const createdMember = await this.memberRepository.create(newMember);
 
