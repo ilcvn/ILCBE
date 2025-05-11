@@ -94,7 +94,7 @@ class GetArticle {
       const knowledgeList = articles.filter((item) => {
         const itemDate = item.createDate;
         return (
-          item.type == ArticleEnum.KNOWLEDGE &&
+          item.type == ArticleEnum.RESEARCH &&
           itemDate >= firstDateOfMonth &&
           itemDate < firstDateOfNextMonth
         );
