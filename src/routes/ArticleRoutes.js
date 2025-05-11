@@ -49,7 +49,7 @@ const ArticleRoutes = () => {
 
   router.get("/", (req, res) => articleController.dynamicSearch(req, res));
 
-  router.post("/statistic/:year", authMiddleware, (req, res) =>
+  router.post("/statistic/:year", (req, res) =>
     articleController.getAllArticleStatisticByYear(req, res)
   );
 
