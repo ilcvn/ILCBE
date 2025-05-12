@@ -101,7 +101,7 @@ class ReservationController {
         subject: reservation.subject,
         file: reservation.file,
         consultDate: reservation.consultDate,
-        createDate: reservation.createDate,
+        createdDate: reservation.createdDate,
       };
 
       sendResponse(res, 200, "Get detail success", "success", responseData);
