@@ -3,7 +3,7 @@ const ArticleType = {
   RESEARCH: "RESEARCH",
   SERVICE: "SERVICE",
   ADMISSIONS: "ADMISSIONS",
-  TRAINEE: "TRAINEE"
+  TRAINING: "TRAINING"
 };
 
 module.exports = ArticleType;
